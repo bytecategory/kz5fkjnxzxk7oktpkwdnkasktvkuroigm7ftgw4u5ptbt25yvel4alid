@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <link rel="shortcut icon type="image/x-icon" href="NSA.ico">
+	<link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="bootstrap-bbs.css">	
+	<link rel="stylesheet" href="kanxue.css">
+    <title>安卓逆向</title>
+    <meta charset="utf-8">
+</head>
+<body>
+<main id="body"> 
+<div class="container">
+<link rel="stylesheet" type="text/css" href="syntax.css">
+		<div class="left_content">		
+				<div class="mb-0">
+					<div class="card-body">
+						
+							<dl class="row">
+								<dd class="vtop">
+								
+									<dl class="row small mt-2 mb-2">
+										<dt style="padding: 0px;">
+											
+										
+											
+										</dt>
+	
+									</dl>
+
+																										</dd>
+							</dl>
+						
+					
+							
+							<h3 class="break-all subject m-0">
+								 
+							</h3>
+							
+							<div class="row mx-0 mt-2">
+								<div class="col-8 px-0">
+									
+
+									
+									
+																	</div>
+								<div class="col px-0 text-right">
+									
+																		
+									
+																		
+																	</div>
+					
+
+
+							</div>
+							<div class="small row mx-0 mt-2">
+								<div class="col px-0">
+									
+									
+								</div>
+								<div class="col px-0 text-right">
+																		
+									
+																	</div>
+							</div>
+							<div class="small row mx-0 mt-2">
+							
+								<div class="col px-0 text-right">
+
+									
+								</div>
+							</div>
+
+													
+
+
+						
+						
+
+						<div class="message" isfirst="1">
+							<p><span style="font-size:6;">珍爱生命 远离小米 华为</span></p><p>下载适用于<code>Windows</code>的<code>SDK</code>平台工具(域名都包含<code>google</code>关键字) 将其(指<code>fastboot</code>和<code>adb</code>)添加到<code>PATH</code></p><p>继续高级搜索 标题包含 使用<code>fastboot</code>刷写 的标签页</p><p>阅读完后 你应该会擦除<code>data</code>分区了</p><p><span style="font-size:6;">在标题包含<code>Nexus</code>和<code>Pixel</code>的出厂映像 (可以使用高级搜索)的标签页中找到<code>2024</code>年<code>2</code>月的链接 后下载归档<code>(zip)</code>文件(<code>Pixel 5</code>的代号是<code>RedFin</code>)</span></p><p><span style="font-size:6;">解压后用<code>7-zip</code>查看<code>SHA-256 CheckSum</code></span></p><p>阅读章节 手动刷写说明</p><p>现在 你学会了刷<code>user</code>构建版本的映像了!!(前提你不要用百度搜狗360搜索)</p><p>在<code>flash-all.bat</code>里搜索(就像在<code>WeChat</code>里找<code>f</code>一样)</p><table border="0" cellpadding="0" cellspacing="0" class="syntaxhighlighter  bash"><tbody><tr><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="bash plain">fastboot&nbsp;-w&nbsp;update</code></div></div></td></tr></tbody></table><p>这一行的<code>-w</code>可以不要 而且解压这一行的归档文件 找到<code>boot.img</code> 背下它&nbsp;</p><p><br></p><p><br></p><p><br></p><p><code>Magisk</code>是一套安卓应用程序(因为有<code>Magisk</code>模块) 而<code>topjohnwu</code>是它的作者之一 可以到<code>github.io</code>里找他</p><p><span style="font-size:6;">那么打开命令提示符 我将要列出存储库的发行版</span></p><table border="0" cellpadding="0" cellspacing="0" class="syntaxhighlighter  bash"><tbody><tr><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="bash plain">gh&nbsp;release&nbsp;list&nbsp;-R&nbsp;topjohnwu</code><code class="bash plain">/Magisk</code></div></div></td></tr></tbody></table><p>找到类型为最新的</p><p>现在是<code>v29.0</code></p><p>相应的命令为</p><table border="0" cellpadding="0" cellspacing="0" class="syntaxhighlighter  bash"><tbody><tr><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="bash plain">gh&nbsp;release&nbsp;download&nbsp;-R&nbsp;topjohnwu</code><code class="bash plain">/Magisk</code>&nbsp;<code class="bash plain">-D&nbsp;./&nbsp;-p&nbsp;Magisk-v29.0.apk</code></div><div class="line number2 index1 alt1"><code class="bash plain">unzip&nbsp;Magisk-v29.0.apk</code></div><div class="line number3 index2 alt2"><code class="bash functions">cd</code>&nbsp;<code class="bash plain">lib</code><code class="bash plain">/x86_64</code></div><div class="line number4 index3 alt1"><code class="bash functions">mv</code>&nbsp;<code class="bash plain">libmagiskboot.so&nbsp;magiskboot</code></div><div class="line number5 index4 alt2"><code class="bash plain">.</code><code class="bash plain">/magiskboot</code></div></div></td></tr></tbody></table><p>输出了"用法 引导映像修改工具"的帮助文字</p><p>先背下来 以后要用它</p><table border="0" cellpadding="0" cellspacing="0" class="syntaxhighlighter  bash"><tbody><tr><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="bash plain">adb&nbsp;</code><code class="bash functions">install</code>&nbsp;<code class="bash plain">Magisk-v29.0.apk</code></div></div></td></tr></tbody></table><p>打开</p><table border="0" cellpadding="0" cellspacing="0" class="syntaxhighlighter  bash"><tbody><tr><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="bash plain">com.topjohnwu.magisk</code></div></div></td></tr></tbody></table><p>选择并修补一个文件</p><table border="0" cellpadding="0" cellspacing="0" class="syntaxhighlighter  bash"><tbody><tr><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="bash plain">adb&nbsp;push&nbsp;boot.img&nbsp;</code><code class="bash plain">/sdcard</code></div></div></td></tr></tbody></table><p>将文件复制到了存储设备</p><p>开始&nbsp;</p><p>然后</p><table border="0" cellpadding="0" cellspacing="0" class="syntaxhighlighter  bash"><tbody><tr><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="bash plain">adb&nbsp;pull&nbsp;</code><code class="bash plain">/storage/emulated/0/Download/XXX</code>&nbsp;<code class="bash plain">XXX</code></div></div></td></tr></tbody></table><p>从设备复制文件到<code>XXX</code></p><p>启动进入<code>fastboot</code>模式</p><table border="0" cellpadding="0" cellspacing="0" class="syntaxhighlighter  bash"><tbody><tr><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="bash plain">fastboot&nbsp;flash&nbsp;boot&nbsp;XXX</code></div></div></td></tr></tbody></table><p>刷写分区后启动设备 继续启用<code>USB</code>连接</p><table border="0" cellpadding="0" cellspacing="0" class="syntaxhighlighter  bash"><tbody><tr><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="bash plain">adb&nbsp;shell</code></div><div class="line number2 index1 alt1"><code class="bash functions">su</code></div></div></td></tr></tbody></table><p>允许</p><table border="0" cellpadding="0" cellspacing="0" class="syntaxhighlighter  bash"><tbody><tr><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="bash plain">com.android.shell</code></div></div></td></tr></tbody></table><p>的超级用户请求</p><p><br></p><p><br></p><p><br></p><p><code>adb pull /apex/com.android.adbd/bin/adbd</code> 后用<code>IDA</code>免费交互式反汇编打开</p><p><br></p><p>然后它说处理器<code>ARM</code>不包含在已安装的<code>IDA</code>版本中</p><p><br></p><p>那么我将用<code>radare2</code>以及它的管道接口<code>r2pipe</code>来逆向工程<code>adbd</code></p><table border="0" cellpadding="0" cellspacing="0" class="syntaxhighlighter  python"><tbody><tr><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="python keyword">import</code>&nbsp;<code class="python plain">r2pipe</code></div><div class="line number2 index1 alt1"><code class="python plain">r</code><code class="python keyword">=</code><code class="python plain">r2pipe.</code><code class="python functions">open</code><code class="python plain">(</code><code class="python string">"adbd"</code><code class="python plain">)</code></div><div class="line number3 index2 alt2"><code class="python plain">r.cmd(</code><code class="python string">"aa"</code><code class="python plain">)</code></div><div class="line number4 index3 alt1"><code class="python plain">r.cmd(</code><code class="python string">"iz~adbd&nbsp;cannot&nbsp;run&nbsp;as&nbsp;root&nbsp;in&nbsp;production&nbsp;builds"</code><code class="python plain">)</code></div><div class="line number5 index4 alt2"><code class="python plain">r.cmd(</code><code class="python string">"axt&nbsp;0x00012529"</code><code class="python plain">)</code></div><div class="line number6 index5 alt1"><code class="python plain">r.cmd(</code><code class="python string">"s&nbsp;0x194d80"</code><code class="python plain">)</code></div><div class="line number7 index6 alt2"><code class="python plain">r.cmd(</code><code class="python string">"af"</code><code class="python plain">)</code></div><div class="line number8 index7 alt1"><code class="python plain">r.cmd(</code><code class="python string">"pdg"</code><code class="python plain">)</code></div></div></td></tr></tbody></table><p><code>~</code>字符启用了内部<code>grep&nbsp;</code>可以用来过滤任何命令的输出</p><p><br></p><p><code>iz</code> 列出了字符串</p><p><br></p><p><code>s</code> 寻找<code>addr</code></p><p><br></p><p><code>af</code> 分析函数(从<code>addr</code>开始)</p><p><br></p><p><code>aa</code> 分析全部</p><p><br></p><p>运行<code>git clone https://android.googlesource.com/platform/packages/modules/adb &amp;&amp; cd adb&nbsp;</code></p><p><br></p><p>然后在<code>daemon\restart_service.cpp</code>中找到</p><p><br></p><p><code>restart_root_service</code></p><p><br></p><p>在<code>Web</code>中搜索<code>__android_log_is_debuggable</code></p><p><code><br></code></p><p>终于你学会了<code>adb root</code></p><p><br></p><p>在此致谢<code>liwugang</code></p>							<br>
+
+
+			
+
+														
+							
+							
+							
+
+													</div>
+
+						<div>
+													</div>
+
+				
+																				</div>
+					</div>
+				
+
+
+							
+							                
+
+			
+			
+
+					
+			
+			
+		</div>
+
+	
+
+
+
+
+
+</main>
+</body></html>

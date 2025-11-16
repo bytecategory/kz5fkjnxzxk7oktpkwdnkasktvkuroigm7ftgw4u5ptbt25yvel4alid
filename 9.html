@@ -1,0 +1,48 @@
+<html>
+	<head>
+	<style>
+body {background-color:#000;font-size: 39px}
+body::-webkit-scrollbar {width: 0;background: transparent}
+	</style>
+        <link rel="stylesheet" href="pygments.css">
+	</head>
+	<body>
+
+    <div class="lyc">
+        <div class="bytecategory"><pre><span></span>使用Github用户fortra的仓库impacket
+0 在smb.py和ntlm.py中将所有USE_NTLMv2(包括小写的use_ntlmv2)的值改为False
+他们的注释是 如果是False 则会回退回ntlmv1
+1 然后我们检查impacket.smb.ntlm.USE_NTLMv2和
+impacket.ntlm.USE_NTLMv2的输出也应为False
+2 执行命令python examples/smbserver.py -port 1314 -username lyc 
+-password lyc sharePath IPC$ -dropssp
+-dropssp选项被用户TurtleARM描述为"SSP-less Net-NTLMV1 hash"
+3 在smbclient.py的第62行找到-port这个argument
+然后把choices的值从['139', '445']改为['139', '445', '1314']
+4 执行命令python examples/smbclient.py -port 1314 "lyc:lyc@127.0.0.1"
+5 如第一篇教程所述,sessionHash就是NTLMv1 ESS hash,
+你们只需要把它改为the challenge from the type 2
+message就可以了
+另外
+respData += b'\xaa' * padLen
+导致了the challenge from the type 2 message固定为
+b'\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa'
+6 如果用了smb过滤器之后,没有显示数据报文
+那么就重新设置过滤器为tcp.port==1314
+并选中任意一个数据报文,
+右键Decode As,
+然后在弹出的窗口中点击Transport,
+在TCP选择框中选择destination(1314),
+在as后的选择列表中选中任意一种协议,
+输入nbss后在左边空白处双击,
+最后依次点击Apply和OK.
+你们肯定会有一个问题:
+为什么在步骤4后smbserver.py的结果是STATUS_LOGON_FAILURE?
+(正常是STATUS_SUCCESS),
+答案:因为smbserver.py只有computeNTLMv2函数.
+(给他加一个computeNTLMv1,哪位兄台愿意完成之?)
+</pre></div>
+
+    </div>
+		</body>
+	</html>

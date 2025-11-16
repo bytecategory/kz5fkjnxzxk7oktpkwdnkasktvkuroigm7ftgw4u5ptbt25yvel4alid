@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en-US"><head><meta charset="utf-8">
+		<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+	<title>preliminary content of phishing website</title>
+	<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body>	
+<div id="banner">
+	<h1>preliminary content of phishing website</h1>
+</div>
+
+<div class="content">
+<p>Notice since 2024,
+applications with insufficient configuration details will have national geographic information public service platform application programming interface access restricted.
+it recommends naming method is (application name)-(application scenario).
+<br>
+steps
+<br> 
+visit <code>lbs.tianditu.gov.cn</code>
+<br>
+console
+<br>
+create a new application(cloud-based)
+<br>
+select the application type(server)
+<br>
+one of the web service application programming interfaces is reverse geocoding(transform geographic coordinates into structured address data)
+<br>
+example
+<br>
+<code>http://api.tiantitu.gov.cn/geocoder?postStr={'lon':x coordinate,'lat':y coordinate,'ver':interface version}&type=geocode&tk=keyname</code>
+<br>
+need to use
+<pre>
+import requests
+r=requests.request('GET',url)</pre>
+parameters 'GET' method,or use mozilla's headless mode
+<br>
+we can check the response status code <code>r.status_code</code> it must be 200
+<br>
+<code>r.json</code> a method not a attribute
+<br>
+<code>r.json()['msg']</code> parameter msg meaning is there any response information.
+<br>
+parameter type(string)('ok':it has information) is must be 'ok'
+<br>
+<code>r.json()['result']</code> specific information of the response
+<br>
+<code>r.json()['result']['formatted_address']</code> detailed address
+</p>
+<p>
+But baidu map open platform,
+<br>
+student version:
+<br>
+need to fill in your real name,mobile phone number,
+<br>
+enter your school name,enter in your major,
+<br>
+select graduation date,
+<br>
+fill in your identification card number,authentication address,usage scenario,upload student identification photo;
+<br>
+developer registration:
+<br>
+fill in your real name,mobile phone number,
+<br>
+enter your real company name,business license number,email address,upload certficates photo to verify business information.
+<br>
+can only use <code>https://lbsyun.baidu.com/jsdemo/demo/yLngLatLocation.htm</code>
+</p>
+<p>
+Step:
+<br>
+visit china telecom intelligent gateway,
+<br>
+confirm login
+<br>
+network side information
+<br>
+ipv4 information
+<br>
+ip address
+<pre>
+from geoip2 import database
+import sys
+def yLngLatLocation(IP):
+	r=database.Reader('./GeoLite2-City.mmdb').city(IP).location
+	print(f"{r.longtitude}\t{r.latitude}")
+if __name__=="__main__":
+	yLngLatLocation(sys.argv[1])</pre>
+download city database:
+<br>
+create new license 
+<br>
+key 
+<br>
+confirm
+<br>
+visit <code>https://download.maxmind.com/geoip/databases/GeoLite2-City/download?suffix=tar.gz</code>
+<br>
+fill in username as account id,fill in password as license key;or csv format.
+</p>
+<p>
+pandas use IO tools to read data from csv file into DataFrame,
+<br>
+read_csv parameters:
+<br>
+usecols:list or function,
+<br>
+nrows:int.
+<br>
+example:
+<br>
+<code>usecols=['network','latitude','longtitude']</code>
+<br>
+csv file downloaded in 2025/4/25 was 1048576 of rows.
+<br>
+encoding:encode,string,example:
+<br>
+<code>encoding='utf-8'</code>
+<br>
+filepath:<code>"./GeoLite2-City-Blocks-IPv4.csv"</code>
+<br>
+<code>ipaddress.IPv4Address</code> will construct ipv4 address,if address is not valid,will raise <code>AddressValueError</code>.
+<br>
+if address is private,then<code> ipaddress.IPv4Address(string).is_private</code> is <code>True</code>
+<br>
+ipv4 address is 32-bit,subnet mask is also 32-bit.
+<br>
+<code>list(ipaddress.IPv4Network(string).hosts()) is a list of all available hosts,in addition to the network address(ex. 192.168.1.0) or broadcast address(ex. 192.168.1.255)(see RFC4632 page 7)</code>
+<br>
+and <code>string.split('.')[0]</code>,record as lambda function f,is network identifier of string.
+<br>
+take class C and china telecom intelligent gateway as example,subnet mask is 255.255.255.0,use CIDR notation is 192.168.1.1/24,all the network identifier of string in the list is 192.
+<br>
+values attribute of DataFrames object will return numpy array b.
+<br>
+<code>j in range(1048576);e in range(1048576)</code>,among them <code>b[j][0]</code> is network segment,<code>b[j][2]</code>is longtitude,<code>b[j][1]</code> is latitude.
+<br>
+<code>k=list(b)</code>,e is natural number that satifies <code>f(k[e][0])==f(string)</code>
+<br>
+if 'e' not in vars(),then network identifier must greater than 69(because you click "sign up for an account with no obligation to purchase or use our products."),as for why,leave it for thought.
+<br>
+recommend replacing <code>range(start,stop)</code> with <code>ProgressBar(widgets=[Percentage(),Bar('█')])(range(start,stop)).</code>
+</p>
+<br>
+<hr>
+<br>
+<p>
+Web application programming interface:
+<br>
+the <code>getCurrentPosition()</code> method of the Geolocation interface is used to get the current position of the device,this feature is available only in secure contexts.
+<br>
+if a page's context is secure,then <code>window.isSecureContext</code> must be <code>true</code>.
+<br>
+parameters:
+<br>
+callback function bytecategory,
+<br>
+optional callback function E,
+<br>
+optional object.
+<pre>
+&lt;button onclick="YZL()"&gt;click event&lt;/button&gt; 
+&lt;!--a clickable button,embed javascript code.-->
+function YZL(r) {	
+	navigator.geolocation.getCurrentPosition(function bytecategory(r) 	
+	{const c = r.coords.latitude[return latitude] + "\n" + r.coords.longitude[return longtitude] + "\n" + r.coords.accuracy[return less or more(meters)];document.write(c)},
+	function E(e) {console.error(e)[error log];},
+	{enableHighAccuracy: true[provide a more accurate position.]});
+} 
+</pre>
+</p>
+<p>
+Ralated php:
+<br>
+<code>http_response_code(500);</code> will raise this page isn't working right now error in microsoft edge.
+<br>
+<code>$_SERVER</code> is an array containing information such as <code>HTTP_USER_AGENT,REMOTE_ADDR</code>
+<br>
+<code>$HTTP_RAW_POST_DATA</code> deprecated in the version 8.(and must write php.ini),it can be replaced by <code>$d=file_get_contents('php://input');</code>
+<br>
+then use <code>json_decode($d,true)</code> decode it,return an array.if array does not contain 'longtitude' key or 'latitude' key or 'accuracy' key and their value,then raise 400 error,because the client's request syntax is wrong.
+<br>
+<code>JSON.stringify</code> method turn <pre>{
+longtitude: (float).toFixed(number),
+latitude: (float).toFixed(number),
+accuracy: (float).toFixed(number)
+}</pre>
+into a json string,similar to <code>json.dumps</code>.
+<br>
+I use fetch application interface to send post request,<code>Content-Type</code> in header is <code>application/json</code>,the field is MIME(media type),if you are interested in it,go and see xiaopan123's video(have you ever thought about uploading something else where you upload?)
+<br>
+when the <code>json.status</code> is true,use <code>document.getElementById</code>method return 
+a element whose id matches the 'studentid',
+and set it to <code>insert_id</code>(you need understand <code>AUTO_INCREMENT</code> in Mysql first.)<br>
+<code>INSERT address(longtitude,latitude,accuracy)</code> will insert the newly created row into the existing table "address",
+<br>
+<code>VALUES(?,?,?)</code>,question mark is placeholder among them;
+<br>
+with it,I need to use <code>bind_param</code> bind parameter as variable to it.
+<br>
+and one of <code>bind_param</code>'s parameter types is 'ddd',becuase longtitude,latitude,accuracy(three),all of them are float.
+<br>
+if there is no <code>execute</code>,then raise 500 error,becuase there must be a server error.In any cause,then connection will close.
+<br>
+if client access the file directly(the payload in name in network in developer tool does not exist.)
+<br>
+will raise 405 error,because I forbid the request that use get method.
+<br>
+example:
+<pre>header('Content-Type: application/json');</pre>
+send raw http header,make browser display pretty-print checkbox.
+<pre>echo json_encode(["status"=>false,"msg"=>"405 Method Not Allowed"]);</pre>
+<em>so far,I use front end to request json data from back end ,use back end to write database,basiclly completed.</em>
+</p>
+<p>
+Then can load mod_rewrite in httpd.conf,create new file .htaccess in web root directory.
+<br>
+Write <code>RewriteEngine On</code> to enable rewrite
+<pre>
+RewriteCond %{HTTP_REFERER}
+!^http://XXX\.XXX\.XXX\.XXX:port/webpage.html [NC]
+RewriteRule "\.js" "-" [F,NC]
+</pre>
+square brackets indicate sign,split by ','.
+<br>
+NC indicate case insensitivity,define rewrite condition as <code>HTTP_REFERER</code> in http header.
+<br>
+visit js directly will raise 403 error.and write in php:
+<br>
+<code>header("Access-Control-Allow-Origin: http://XXX.XXX.XXX.XXX:port")</code>
+<br>
+specify that all files with js extensions should not be shared with the specified origin(except local). 
+<br>
+then use <code>&lt;script src='filename.js'&gt;&lt;/script&gt;</code>,no button require.at last,
+<br>
+step:
+<br>
+windows:
+<br>
+display settings,privacy and security,location,
+turn location services on;
+<br>
+android:<br>
+settings,location,use location;<br>
+apps,permissions,location,allow only while using the app.then open website.
+</p>
+<p>
+Haversine formula can calculate the geodesic distance between two points on a sphere.
+<br>
+the folling is latex:
+<pre>
+$g=\sin{((c-a)/2)}^{2}+\cos{b}\cdot\cos{d}\cdot\sin{((d-b)/2)}^{2}$
+$2\cdot r\cdot \arctan{\cfrac{\sqrt{g}}{\sqrt{1-g}}}$
+$2\cdot r\cdot \arcsin{\sqrt{g}}$
+</pre>
+a,c longtitude(float)
+<br>
+b,d latitude(float)
+</p>
+<code>a,b,c,d=(math.radians(j) for j in [a,b,c,d])</code>,or use <code>map</code>.
+<br>
+return the geodesic distance between two points on earth.<br>
+r:earth's radius 6371km.(unit km)
+or 
+<pre>
+from geopy import distance
+distance.distance(point,point)
+</pre>
+<center><em>the css style is by the internet own boy aaron sw design.</em></center>
+<p class="posted">
+posted May 13,2025 8:59 PM 
+</p>
+</div>
+
+</body></html>
