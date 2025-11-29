@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<meta name="description" content="A dcerpc scanner under development">
+<title>A dcerpc scanner under development</title>
+<style>
+pre, pre code.hljs {
+overflow: visible;
+white-space: pre-wrap;
+word-break: break-word;
+}
+h3 {
+font-family: Roboto, sans-serif;
+padding: 16px;
+}
+p, time {
+color: #757575;
+font: 16px Roboto, sans-serif;
+padding: 16px;
+}
+body::-webkit-scrollbar {width: 0;background: transparent}
+</style>
+<link rel="stylesheet" href="normalize.min.css">
+</head>
+<body>
+<div>
+<main>
+<article>
+<h3>
+A dcerpc scanner under development
+</h3>
+<div>
+<div>
+<span>
+<time datetime="2025-10-19T02:11:00-07:00" title="2025-10-19T02:11:00-07:00">
+October 19, 2025
+</time>
+</span>
+</div>
+</div>
+<div>
+<link rel="stylesheet" href="default.min.css">
+<pre><code class="language-python hljs" data-highlighted="yes">
+<span class="hljs-keyword">import</span> socket 
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect((<span class="hljs-string">'127.0.0.1'</span>,<span class="hljs-number">135</span>))
+s.send(<span class="hljs-built_in">bytes</span>.fromhex(<span class="hljs-string">'05000b03100000007400000002000000d016d016000000000200000000000100c4fefc9960521b10bbcb00aa0021347a00000000045d888aeb1cc9119fe808002b1048600200000001000100c4fefc9960521b10bbcb00aa0021347a000000002c1cb76c12984045030000000000000001000000'</span>))
+s.send(<span class="hljs-built_in">bytes</span>.fromhex(<span class="hljs-string">'050000031000000018000000020000000000000000000500'</span>))
+</code></pre>
+<p>core code is as above</p>
+<pre><code class="language-python hljs" data-highlighted="yes">
+<span class="hljs-keyword">from</span> scapy.fields <span class="hljs-keyword">import</span> (
+    LEShortField,
+    PacketLenField,
+    PacketListField,
+    StrFixedLenField
+)
+
+<span class="hljs-keyword">from</span> scapy.packet <span class="hljs-keyword">import</span> (
+    Packet
+)
+<span class="hljs-comment"># issubclass(IP,Packet)-&gt;True</span>
+<span class="hljs-keyword">from</span> uuid <span class="hljs-keyword">import</span> (
+    UUID
+)
+<span class="hljs-comment"># 通用唯一标识符版本一</span>
+<span class="hljs-keyword">from</span> scapy.layers.dcerpc <span class="hljs-keyword">import</span> (
+    DceRpc5Request,
+    DceRpc5,
+    DceRpc5Bind
+)
+<span class="hljs-keyword">from</span> scapy.layers.msrpce.<span class="hljs-built_in">all</span> <span class="hljs-keyword">import</span> (
+    find_dcerpc_interface
+)
+<span class="hljs-keyword">from</span> scapy.<span class="hljs-built_in">all</span> <span class="hljs-keyword">import</span> hexdump
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">WBZ7j</span>(<span class="hljs-title class_ inherited__">Packet</span>):
+    name = <span class="hljs-string">"WBZ7j"</span>
+    fields_desc = [
+        LEShortField(<span class="hljs-string">"cn_ctx_id"</span>, <span class="hljs-number">0</span>),
+        LEShortField(<span class="hljs-string">"cn_num_trans_items"</span>, <span class="hljs-number">1</span>),        
+        StrFixedLenField(<span class="hljs-string">"abstract_syntax"</span>, <span class="hljs-string">b""</span>, length=<span class="hljs-number">20</span>),  
+        PacketListField(
+        name=<span class="hljs-string">"cn_bind_trans"</span>, 
+        default=[], 
+        pkt_cls=<span class="hljs-keyword">lambda</span>: StrFixedLenField(<span class="hljs-string">"ts"</span>, <span class="hljs-string">b""</span>, length=<span class="hljs-number">20</span>), count_from=<span class="hljs-keyword">lambda</span> pkt: pkt.cn_num_trans_items)
+    ]
+cn_bind_to_uuid = find_dcerpc_interface(<span class="hljs-string">'IObjectExporter'</span>).uuid.bytes_le
+<span class="hljs-comment"># IObjectExporter对象导出器方法 用端点映射器查找一个远程过程调用接口</span>
+<span class="hljs-comment"># ServerAlive2操作和是5</span>
+cn_bind_trans_id = <span class="hljs-built_in">list</span>((UUID(<span class="hljs-string">'8a885d04-1ceb-11c9-9fe8-08002b104860'</span>).bytes_le+<span class="hljs-built_in">bytes</span>.fromhex(<span class="hljs-string">'02000000'</span>),))
+<span class="hljs-comment"># 生成器表达式</span>
+item0 = WBZ7j(cn_ctx_id=<span class="hljs-number">0</span>, cn_num_trans_items=<span class="hljs-number">1</span>, abstract_syntax=cn_bind_to_uuid, cn_bind_trans=cn_bind_trans_id)
+cn_bind_trans_id = <span class="hljs-built_in">list</span>((UUID(<span class="hljs-string">'6cb71c2c-9812-4540-0300-000000000000'</span>).bytes_le+<span class="hljs-built_in">bytes</span>.fromhex(<span class="hljs-string">'01000000'</span>),))
+item1 = WBZ7j(cn_ctx_id=<span class="hljs-number">1</span>, cn_num_trans_items=<span class="hljs-number">1</span>, abstract_syntax=cn_bind_to_uuid, cn_bind_trans=cn_bind_trans_id)
+context_list = [item0, item1]  
+pkt = DceRpc5(
+    rpc_vers=<span class="hljs-number">5</span>,
+    rpc_vers_minor=<span class="hljs-number">0</span>,
+    ptype=<span class="hljs-number">11</span>,
+    pfc_flags=<span class="hljs-number">0x03</span>,
+    endian=<span class="hljs-number">1</span>,
+    encoding=<span class="hljs-number">0</span>,
+    <span class="hljs-built_in">float</span>=<span class="hljs-number">0</span>,
+    reserved1=<span class="hljs-number">0</span>,
+    reserved2=<span class="hljs-number">0</span>,
+    frag_len=<span class="hljs-number">116</span>,
+    auth_len=<span class="hljs-number">0</span>,
+    call_id=<span class="hljs-number">2</span>,
+    auth_verifier=<span class="hljs-literal">None</span>,
+    auth_padding=<span class="hljs-literal">None</span>,
+    vt_trailer=<span class="hljs-literal">None</span>
+    )
+<span class="hljs-string">"""
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|    RPC VERS   | RPC VERS MINOR|     PTYPE     |   PFC FLAGS   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+| ENDIAN|ENCODIN|     FLOAT     |   RESERVED1   |   RESERVED2   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|            FRAG LEN           |            AUTH LEN           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                            CALL ID                            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         AUTH VERIFIER         |          AUTH PADDING         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|           VT TRAILER          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+"""</span>
+hexdump(pkt)
+a = DceRpc5Bind(
+    max_xmit_frag=<span class="hljs-number">5840</span>,
+    max_recv_frag=<span class="hljs-number">5840</span>,
+    assoc_group_id=<span class="hljs-number">0x00000000</span>,
+    n_context_elem=<span class="hljs-number">2</span>,
+    reserved=<span class="hljs-number">0</span>,
+    context_elem=context_list
+)
+hexdump(a)
+a=<span class="hljs-built_in">bytes</span>(a)
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">bytes</span>(pkt).<span class="hljs-built_in">hex</span>()+a.<span class="hljs-built_in">hex</span>())
+pkt = DceRpc5(
+    rpc_vers=<span class="hljs-number">5</span>,
+    rpc_vers_minor=<span class="hljs-number">0</span>,
+    ptype=<span class="hljs-number">0</span>,
+    pfc_flags=<span class="hljs-number">0x03</span>,
+    endian=<span class="hljs-number">1</span>,
+    encoding=<span class="hljs-number">0</span>,
+    <span class="hljs-built_in">float</span>=<span class="hljs-number">0</span>,
+    reserved1=<span class="hljs-number">0</span>,
+    reserved2=<span class="hljs-number">0</span>,
+    frag_len=<span class="hljs-number">24</span>,
+    auth_len=<span class="hljs-number">0</span>,
+    call_id=<span class="hljs-number">2</span>,
+    auth_verifier=<span class="hljs-literal">None</span>,
+    auth_padding=<span class="hljs-literal">None</span>,
+    vt_trailer=<span class="hljs-literal">None</span>
+    )
+c=DceRpc5Request(
+    alloc_hint=<span class="hljs-number">0</span>,
+    cont_id=<span class="hljs-number">0</span>,
+    opnum=<span class="hljs-number">5</span>,
+    <span class="hljs-built_in">object</span>=<span class="hljs-literal">None</span>
+)
+hexdump(pkt)
+hexdump(c)
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">bytes</span>(pkt).<span class="hljs-built_in">hex</span>()+<span class="hljs-built_in">bytes</span>(c).<span class="hljs-built_in">hex</span>())
+</code></pre>
+<p>I dont want to explain too much</p>
+</div>
+</article>
+<footer>
+</footer>
+</main>
+</div>
+</body></html>

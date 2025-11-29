@@ -1,0 +1,94 @@
+<html>
+<head>
+    <style>
+    body {background-color:#000;font-size: 20px}
+        pre { line-height: 125%; background-color:#000}
+text {color: white;font-style: monospace}
+    </style>
+    <link rel="stylesheet" href="pygments.css">
+    </head>
+    <body>
+	
+	<p>
+	<text>Reverse Engineering Xiaorong Hacker Dictionary</text>
+	<div class="lyc">
+	<div class="bytecategory"><pre><span></span><span class="k">cd</span>\ <span class="p">&amp;</span> <span class="k">cd</span> MinGW\include <span class="p">&amp;</span> <span class="k">type</span> winuser.h <span class="p">|</span> findstr <span class="s2">&quot;177&quot;</span>
+<span class="c1">rem 0xB1-&gt;EM_SETSEL-&gt;177-&gt;winuser.h|1571</span>
+<span class="k">type</span> winuser.h <span class="p">|</span> findstr <span class="s2">&quot;183&quot;</span>
+<span class="c1">rem 0xB7-&gt;EM_SCROLLCARET-&gt;183-&gt;winuser.h|1562</span>
+<span class="c1">rem wParam This parameter is reversed.It should be set to zero.</span>
+<span class="c1">rem lParam This parameter is reversed.Ir should be set to zero.</span>
+<span class="c1">rem 0x3u-&gt; 0x2|0x1 -&gt; FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_READONLY</span>
+<span class="c1">rem SetFileAttributesA(L&quot;C:\regbanyet.dat&quot;,FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_READONLY);</span>
+<span class="k">cd</span> \ <span class="p">&amp;</span> attrib regbanyet.dat
+<span class="c1">rem output should be contain &#39;HR&#39;</span>
+<span class="c1">rem GetWindowTextA(hWnd,String,100)</span>
+<span class="c1">rem GetWindowTextA(hWnd,Buffer,100)</span>
+</pre></div>
+    </div>	
+	<br>
+	<text>Python</text>
+    <div class="lyc">
+        <div class="bytecategory"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sub_401B70</span><span class="p">(</span><span class="n">String</span><span class="p">):</span>
+    <span class="n">v13</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">String</span><span class="p">)))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">String</span><span class="p">),</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">v5</span><span class="o">=</span><span class="nb">ord</span><span class="p">(</span><span class="n">String</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">%</span><span class="mi">10</span>
+        <span class="k">if</span> <span class="n">v5</span><span class="o">%</span><span class="mi">2</span><span class="p">:</span>  
+            <span class="k">if</span> <span class="n">v5</span><span class="o">%</span><span class="mi">3</span><span class="p">:</span>  
+                <span class="n">v13</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="nb">chr</span><span class="p">(</span><span class="n">v5</span><span class="o">+</span><span class="mi">49</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>  
+                <span class="n">v13</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">String</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">%</span><span class="mi">26</span><span class="o">+</span><span class="mi">97</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">v13</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">String</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">%</span><span class="mi">26</span><span class="o">+</span><span class="mi">65</span><span class="p">)</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="n">v13</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">sub_401B70</span><span class="p">(</span><span class="s1">&#39;bytecategory&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+	<text>Haskell</text>
+	<div class="lyc"><div class="bytecategory"><pre><span></span><span class="kr">import</span><span class="w"> </span><span class="nn">Data.Char</span><span class="w"> </span><span class="p">(</span><span class="nf">ord</span><span class="p">,</span><span class="w"> </span><span class="nf">chr</span><span class="p">)</span>
+<span class="nf">sub_401B70</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">String</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">String</span><span class="w"> </span>
+<span class="nf">sub_401B70</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">map</span><span class="w"> </span><span class="n">sub_420016</span><span class="w"> </span><span class="n">i</span>
+<span class="nf">sub_420016</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Char</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Char</span>
+<span class="nf">sub_420016</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="ow">=</span>
+<span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="n">v5</span><span class="w"> </span><span class="p">`</span><span class="n">mod</span><span class="p">`</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="w">  </span>
+<span class="w">       </span><span class="kr">then</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="n">v5</span><span class="w"> </span><span class="p">`</span><span class="n">mod</span><span class="p">`</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mi">0</span><span class="w">  </span>
+<span class="w">            </span><span class="kr">then</span><span class="w"> </span><span class="n">chr</span><span class="w"> </span><span class="p">(</span><span class="n">v5</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">49</span><span class="p">)</span><span class="w">  </span>
+<span class="w">            </span><span class="kr">else</span><span class="w"> </span><span class="n">chr</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="p">`</span><span class="n">mod</span><span class="p">`</span><span class="w"> </span><span class="mi">26</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">97</span><span class="p">)</span><span class="w">  </span>
+<span class="w">    </span><span class="kr">else</span><span class="w"> </span><span class="n">chr</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="p">`</span><span class="n">mod</span><span class="p">`</span><span class="w"> </span><span class="mi">26</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">65</span><span class="p">)</span><span class="w"> </span>
+<span class="w">    </span><span class="kr">where</span>
+<span class="w">        </span><span class="n">s</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">ord</span><span class="w"> </span><span class="n">string</span><span class="w"> </span>
+<span class="w">        </span><span class="n">v5</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="p">`</span><span class="n">mod</span><span class="p">`</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span>
+<span class="nf">main</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">IO</span><span class="w"> </span><span class="nb">()</span>
+<span class="nf">main</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kr">do</span>
+<span class="w">       </span><span class="kr">let</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">sub_401B70</span><span class="w"> </span><span class="s">&quot;bytecategory&quot;</span>
+<span class="w">       </span><span class="n">putStrLn</span><span class="w"> </span><span class="n">result</span>
+</pre></div></div>
+<text>C</text>
+<div class='lyc'><div class="bytecategory"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">String</span><span class="p">);</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="w"> </span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="n">v5</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">String</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">v5</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">)</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">v5</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">)</span>
+<span class="w">          </span><span class="n">v13</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v5</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">49</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">          </span><span class="n">v13</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">String</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">26</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">97</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="k">else</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="n">v13</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">String</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">26</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">65</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+</pre></div></div>
+<text>BAT</text>
+<div class="lyc">
+<div class="bytecategory"><pre><span></span><span class="k">type</span> nul <span class="p">&gt;</span> C:\regbanyet.dat
+</pre></div>
+</div>
+</p>
+</body>
+</html>
+

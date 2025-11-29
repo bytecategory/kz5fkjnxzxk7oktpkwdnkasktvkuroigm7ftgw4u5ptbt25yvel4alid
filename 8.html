@@ -1,0 +1,299 @@
+<html>
+<head>
+<style>
+a {text-decoration: none;background: #808080;margin: 0px 0px 4px;padding: 4px 8px;color: #FFFFFF;border: solid #708090;}
+text {color: #FFD700;filter: blur(0.39px);font-weight: lighter;}
+body {background-color:#000;font-size: 20px;}
+body::-webkit-scrollbar {width: 0;background: transparent}
+</style>
+<link rel="stylesheet" href="pygments.css">
+</head>
+<body scroll="no">
+<div class="lyc">
+	    <div class="bytecategory"><pre><span></span><span class="n">标题</span> <span class="n">NBSS协议之NTLM认证</span> <span class="n">第一篇</span>
+</pre></div>
+</div>
+<div class="lyc">
+           <div class="bytecategory"><pre>
+其他格式 <a href="1.txt">TXT</a>&nbsp;&nbsp;<a href="8.pdf">PDF</a>&nbsp;&nbsp;<a href="8.html">HTML</a>
+</pre></div>
+</div>
+    <div class="lyc">
+        <div class="bytecategory"><pre><span></span>0 在命令提示符中输入net use \\192.168.1.13 /user:lyc lyc后按回车
+1 检查输出是否是&quot;命令成功完成.&quot;(中文操作系统),如果不是的话请跳转至最后两步
+2 打开wireshark 1.2.6 在Filter:后输入smb
+/*
+这个版本如果找不到我也可以发给你们
+此后在Windows任务管理器中要一直有wireshark.exe这个映像名称
+*/
+3 选择菜单栏的Capture,点击Stop
+4 再次选择菜单栏里的File,点击Save
+5 在弹出的窗口中看到Packet Range,勾选Displayed,默认为Captured
+6 在文件名后的输入框中输入一个文件名123
+7 保存
+8 选择菜单栏里的File,点击Open
+9 在弹出的窗口中选中123.pcap,点击打开
+/* 
+这是默认的保存类型 
+现在你应该看到了8个数据报文(如果不是的话不要紧,我可以发给你们)
+我们只关注2个数据报文
+*/
+10 在Filter:后依次输入ntlmssp.messagetype==0x00000002和ntlmssp.messagetype==0x00000003
+/*
+将分别显示第4个和第5个(MS-NLMP的解释是Challenge(挑战)消息和Authenticate(认证)消息)
+*/
+11 在文件资源管理器里,按住Shift,同时按右键,在此处打开命令提示符窗口并输入python后按回车
+12 输入以下内容
+</pre></div>
+
+    </div>
+<div class="lyc">
+        <div class="bytecategory"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyshark</span>
+<span class="n">a</span><span class="o">=</span><span class="n">pyshark</span><span class="o">.</span><span class="n">FileCapture</span><span class="p">(</span><span class="s1">&#39;123.pcap&#39;</span><span class="p">)</span>
+<span class="n">b</span><span class="o">=</span><span class="n">a</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">c</span><span class="o">=</span><span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;auth username:&quot;</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">smb</span><span class="o">.</span><span class="n">ntlmssp_auth_username</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;auth hostname:&quot;</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">smb</span><span class="o">.</span><span class="n">ntlmssp_auth_hostname</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;auth lan manager response:&quot;</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">smb</span><span class="o">.</span><span class="n">ntlmssp_auth_lmresponse</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;auth ntlm response&quot;</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">smb</span><span class="o">.</span><span class="n">ntlmssp_auth_ntresponse</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ntlm server challenge:&quot;</span><span class="p">,</span><span class="n">c</span><span class="o">.</span><span class="n">smb</span><span class="o">.</span><span class="n">ntlmssp_ntlmserverchallenge</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">),</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+
+    <div class="lyc">
+        <div class="bytecategory"><pre><span></span>13 第二种方法输入exit()后按回车,再次输入
+</pre></div>
+
+    </div>
+	<div class="lyc">
+	<div class="bytecategory"><pre><span></span>tshark<span class="w"> </span>-r<span class="w"> </span><span class="m">123</span>.pcap<span class="w"> </span>-Tfields<span class="w"> </span>-e<span class="w"> </span>ntlmssp.auth.username<span class="w"> </span>-e<span class="w"> </span>ntlmssp.auth.hostname
+-e<span class="w"> </span>ntlmssp.auth.lmresponse<span class="w"> </span>-e<span class="w"> </span>ntlmssp.auth.ntresponse<span class="w"> </span>-e<span class="w"> </span>ntlmssp.ntlmserverchallenge
+</pre></div></div>
+<div class="lyc">
+        <div class="bytecategory"><pre><span></span>/*
+复制的时候要注意回车符
+*/
+14.0 在192.168.1.13这个主机上(XP系统)按Windows键,再按C键,打开控制面板
+14.1 选择一个类别:外观和主题
+14.2 选择一个控制面板图标:文件夹选项
+14.3 在弹出的窗口中点击查看这一栏
+14.4 取消勾选 使用简单文件共享 (推荐)这个选项
+14.5 然后按确定
+/*
+接下来有两种方法
+*/
+15.0 第一种方法:在命令提示符中输入netsh firewall set opmode mode = DISABLE,输出应该是&quot;确定&quot;
+15.1 然后返回1检查输出
+15.2 第二种方法:倘若你已经执行了第一种方法,那你得
+在命令提示符中输入netsh firewall set opmode mode = ENABLE,输出也应该是&quot;确定&quot;
+15.3 然后继续输入net stop SharedAccess,输出应该包含&quot;已成功停止&quot;
+15.4 然后返回1检查输出
+16 过滤表达式为ntlmssp.negotiatentlm2==1,应该显示3,4,5一共3个数据报文(对于4.0.17版本以下的tshark)
+17 第二种确定是否With Extended Session Security的方法
+对于4.2.0版本以上的tshark
+过滤表达式为ntlmssp.negotiateextendedsessionsecurity==1,还是显示3,4,5一共3个数据报文
+
+这里是分割线 以下内容不适合脚本小子
+
+参考Github上用户hashcat的仓库
+
+hashcat/blob/master/src/modules/module_05500.c
+</pre></div>
+
+    </div>
+	
+    <div class="lyc">
+        <div class="bytecategory"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">transform_netntlmv1_key</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">nthash</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">key</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">                    </span><span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">  </span><span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">  </span><span class="n">key</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="w">  </span><span class="n">key</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="w">  </span><span class="n">key</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span>
+<span class="w">  </span><span class="n">key</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span>
+<span class="w">  </span><span class="n">key</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">6</span><span class="p">);</span>
+<span class="w">  </span><span class="n">key</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">;</span>
+<span class="w">  </span><span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">;</span>
+<span class="w">  </span><span class="n">key</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">;</span>
+<span class="w">  </span><span class="n">key</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">;</span>
+<span class="w">  </span><span class="n">key</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">;</span>
+<span class="w">  </span><span class="n">key</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">;</span>
+<span class="w">  </span><span class="n">key</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">;</span>
+<span class="w">  </span><span class="n">key</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+    </div>
+<div class="lyc">
+<div class="bytecategory">
+<pre>
+Python 自研
+</pre>
+</div>
+</div>
+
+    <div class="lyc">
+        <div class="bytecategory"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">transform_netntlmv1_key</span><span class="p">(</span><span class="n">nthash</span><span class="p">,</span><span class="n">key</span><span class="p">):</span>
+    <span class="n">nthash</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span> <span class="o">&amp;</span> <span class="mh">0xff</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">nthash</span><span class="p">]</span>    
+    <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span>                     <span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">nthash</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">7</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0xff</span> 
+    <span class="n">key</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">nthash</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">6</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0xff</span> 
+    <span class="n">key</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">nthash</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">5</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">3</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0xff</span> 
+    <span class="n">key</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">nthash</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0xff</span> 
+    <span class="n">key</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">nthash</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">5</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0xff</span> 
+    <span class="n">key</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">nthash</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">6</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0xff</span>    
+    <span class="n">key</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">nthash</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">)</span>  
+    <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">|=</span> <span class="mh">0x01</span>  
+    <span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">|=</span> <span class="mh">0x01</span>
+    <span class="n">key</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">|=</span> <span class="mh">0x01</span> 
+    <span class="n">key</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">|=</span> <span class="mh">0x01</span> 
+    <span class="n">key</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">|=</span> <span class="mh">0x01</span>  
+    <span class="n">key</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">|=</span> <span class="mh">0x01</span> 
+    <span class="n">key</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">|=</span> <span class="mh">0x01</span>  
+    <span class="n">key</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">|=</span> <span class="mh">0x01</span> 
+    <span class="k">return</span> <span class="n">key</span>
+</pre></div>
+
+    </div>
+<div class="lyc">
+<div class="bytecategory">
+<pre>
+Java 来自SOURCEFORGE
+</pre>
+</div>
+</div>
+
+    <div class="lyc">
+        <div class="bytecategory"><pre><span></span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="n">Key</span><span class="w"> </span><span class="nf">createDESKey</span><span class="p">(</span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">bytes</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">offset</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">keyBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="mi">7</span><span class="o">]</span><span class="p">;</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">arraycopy</span><span class="p">(</span><span class="n">bytes</span><span class="p">,</span><span class="w"> </span><span class="n">offset</span><span class="p">,</span><span class="w"> </span><span class="n">keyBytes</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">material</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="mi">8</span><span class="o">]</span><span class="p">;</span>
+<span class="w">        </span><span class="n">material</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keyBytes</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">;</span>
+<span class="w">        </span><span class="n">material</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">byte</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">keyBytes</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">keyBytes</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xff</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;&gt;&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">        </span><span class="n">material</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">byte</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">keyBytes</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">keyBytes</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xff</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;&gt;&gt;</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="w">        </span><span class="n">material</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">byte</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">keyBytes</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">keyBytes</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xff</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;&gt;&gt;</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">material</span><span class="o">[</span><span class="mi">4</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">byte</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">keyBytes</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">keyBytes</span><span class="o">[</span><span class="mi">4</span><span class="o">]</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xff</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;&gt;&gt;</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span>
+<span class="w">        </span><span class="n">material</span><span class="o">[</span><span class="mi">5</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">byte</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">keyBytes</span><span class="o">[</span><span class="mi">4</span><span class="o">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">keyBytes</span><span class="o">[</span><span class="mi">5</span><span class="o">]</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xff</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;&gt;&gt;</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span>
+<span class="w">        </span><span class="n">material</span><span class="o">[</span><span class="mi">6</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">byte</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">keyBytes</span><span class="o">[</span><span class="mi">5</span><span class="o">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">keyBytes</span><span class="o">[</span><span class="mi">6</span><span class="o">]</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xff</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;&gt;&gt;</span><span class="w"> </span><span class="mi">6</span><span class="p">);</span>
+<span class="w">        </span><span class="n">material</span><span class="o">[</span><span class="mi">7</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">byte</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">keyBytes</span><span class="o">[</span><span class="mi">6</span><span class="o">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">        </span><span class="n">oddParity</span><span class="p">(</span><span class="n">material</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SecretKeySpec</span><span class="p">(</span><span class="n">material</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;DES&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="nf">getNTLM2SessionResponse</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">password</span><span class="p">,</span>
+<span class="w">            </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">challenge</span><span class="p">,</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">clientNonce</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">ntlmHash</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ntlmHash</span><span class="p">(</span><span class="n">password</span><span class="p">);</span>
+<span class="w">        </span><span class="n">MessageDigest</span><span class="w"> </span><span class="n">md5</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MessageDigest</span><span class="p">.</span><span class="na">getInstance</span><span class="p">(</span><span class="s">&quot;MD5&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">md5</span><span class="p">.</span><span class="na">update</span><span class="p">(</span><span class="n">challenge</span><span class="p">);</span>
+<span class="w">        </span><span class="n">md5</span><span class="p">.</span><span class="na">update</span><span class="p">(</span><span class="n">clientNonce</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">sessionHash</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="mi">8</span><span class="o">]</span><span class="p">;</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">arraycopy</span><span class="p">(</span><span class="n">md5</span><span class="p">.</span><span class="na">digest</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">sessionHash</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">lmResponse</span><span class="p">(</span><span class="n">ntlmHash</span><span class="p">,</span><span class="w"> </span><span class="n">sessionHash</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="nf">lmResponse</span><span class="p">(</span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">hash</span><span class="p">,</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">challenge</span><span class="p">)</span>
+<span class="w">            </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">keyBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="mi">21</span><span class="o">]</span><span class="p">;</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">arraycopy</span><span class="p">(</span><span class="n">hash</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">keyBytes</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Key</span><span class="w"> </span><span class="n">lowKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">createDESKey</span><span class="p">(</span><span class="n">keyBytes</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Key</span><span class="w"> </span><span class="n">middleKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">createDESKey</span><span class="p">(</span><span class="n">keyBytes</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Key</span><span class="w"> </span><span class="n">highKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">createDESKey</span><span class="p">(</span><span class="n">keyBytes</span><span class="p">,</span><span class="w"> </span><span class="mi">14</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Cipher</span><span class="w"> </span><span class="n">des</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Cipher</span><span class="p">.</span><span class="na">getInstance</span><span class="p">(</span><span class="s">&quot;DES/ECB/NoPadding&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">des</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="n">Cipher</span><span class="p">.</span><span class="na">ENCRYPT_MODE</span><span class="p">,</span><span class="w"> </span><span class="n">lowKey</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">lowResponse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">des</span><span class="p">.</span><span class="na">doFinal</span><span class="p">(</span><span class="n">challenge</span><span class="p">);</span>
+<span class="w">        </span><span class="n">des</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="n">Cipher</span><span class="p">.</span><span class="na">ENCRYPT_MODE</span><span class="p">,</span><span class="w"> </span><span class="n">middleKey</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">middleResponse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">des</span><span class="p">.</span><span class="na">doFinal</span><span class="p">(</span><span class="n">challenge</span><span class="p">);</span>
+<span class="w">        </span><span class="n">des</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="n">Cipher</span><span class="p">.</span><span class="na">ENCRYPT_MODE</span><span class="p">,</span><span class="w"> </span><span class="n">highKey</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">highResponse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">des</span><span class="p">.</span><span class="na">doFinal</span><span class="p">(</span><span class="n">challenge</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">lmResponse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="mi">24</span><span class="o">]</span><span class="p">;</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">arraycopy</span><span class="p">(</span><span class="n">lowResponse</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">lmResponse</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">);</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">arraycopy</span><span class="p">(</span><span class="n">middleResponse</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">lmResponse</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">);</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">arraycopy</span><span class="p">(</span><span class="n">highResponse</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">lmResponse</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">lmResponse</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+</pre></div>
+
+    </div>
+	<div class="lyc">
+<div class="bytecategory">
+<pre>
+Python 自研 注释来自Ryan Grunsten
+</pre>
+</div>
+</div>
+
+    
+    
+    <div class="lyc">
+        <div class="bytecategory"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">netntlmv1_empty_checker</span><span class="p">(</span><span class="n">netntlm_t</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+    <span class="n">hc_token_t</span> <span class="o">=</span> <span class="n">netntlm_t</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>    
+    <span class="n">lmResponse</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">hc_token_t</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">ntresponse</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">hc_token_t</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+    <span class="n">challenge</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">hc_token_t</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+    <span class="n">clientNonce</span> <span class="o">=</span> <span class="n">lmResponse</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    the 8 byte server challenge is concatednated </span>
+<span class="sd">    with the 8 byte client challenge,yielding the &quot;session nonce&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>  
+    <span class="n">sessionHash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">challenge</span><span class="p">)</span>
+    <span class="n">sessionHash</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">clientNonce</span><span class="p">)</span>
+    <span class="n">sessionHash</span> <span class="o">=</span> <span class="n">sessionHash</span><span class="o">.</span><span class="n">digest</span><span class="p">()[:</span><span class="mi">8</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    the session nonce is MD5 hashed,yielding a 16 byte hash </span>
+<span class="sd">    the 16 byte hash is truncated to 8 bytes,yielding the NTLMv1 ESS hash.    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;md4&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-16le&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    the 16 byte NT hash(AKA MD4 hash of user password) is null-padded to 21 bytes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">keyBytes</span> <span class="o">=</span> <span class="nb">hash</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The 16-byte NTLM hash is null-padded to 21 bytes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lowKey</span> <span class="o">=</span> <span class="n">keyBytes</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span>
+    <span class="n">middleKey</span> <span class="o">=</span> <span class="n">keyBytes</span><span class="p">[</span><span class="mi">7</span><span class="p">:</span><span class="mi">14</span><span class="p">]</span>
+    <span class="n">highKey</span> <span class="o">=</span> <span class="n">keyBytes</span><span class="p">[</span><span class="mi">14</span><span class="p">:</span><span class="mi">21</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The value is split into three 7-byte thrids</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">lowResponse</span> <span class="o">=</span> <span class="n">transform_netntlmv1_key</span><span class="p">(</span><span class="n">lowKey</span><span class="p">,</span><span class="nb">bytearray</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
+    <span class="n">middleResponse</span> <span class="o">=</span> <span class="n">transform_netntlmv1_key</span><span class="p">(</span><span class="n">middleKey</span><span class="p">,</span><span class="nb">bytearray</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
+    <span class="n">highResponse</span> <span class="o">=</span> <span class="n">transform_netntlmv1_key</span><span class="p">(</span><span class="n">highKey</span><span class="p">,</span><span class="nb">bytearray</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    These values are used to create three DES keys</span>
+<span class="sd">    (one from each 7-byte third)</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">return</span> <span class="n">new</span><span class="p">(</span><span class="n">lowResponse</span><span class="p">,</span> <span class="n">MODE_ECB</span><span class="p">)</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">sessionHash</span><span class="p">)</span><span class="o">+</span><span class="n">new</span><span class="p">(</span><span class="n">middleResponse</span><span class="p">,</span> <span class="n">MODE_ECB</span><span class="p">)</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">sessionHash</span><span class="p">)</span><span class="o">+</span><br><span class="n">    new</span><span class="p">(</span><span class="n">highResponse</span><span class="p">,</span> <span class="n">MODE_ECB</span><span class="p">)</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">sessionHash</span><span class="p">)</span><span class="o">==</span><span class="n">ntresponse</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    each third is used as a DES key to encrypt the NTLMv1 ESS hash</span>
+<span class="sd">    resulting in three 8 byte ciphertext values</span>
+<span class="sd">    These three 8 byte ciphertext values are concatednated</span>
+<span class="sd">    resulting in the 24 byte NTLMv1 ESS Response.</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+</pre></div>
+    </div>
+	<div class="lyc">
+<div class="bytecategory">
+<pre>
+可以修改RawHash(获取方式在12-13步里)和lyc的值
+</pre>
+</div>
+</div>
+<div class="lyc">
+        <div class="bytecategory"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">RawHash</span> <span class="o">=</span> <span class="s2">&quot;lyc::SXSYMXSYY-PC:4bf50c3614e7257600000000000000000000000000000000</span><br><span class="s2">    :59e47b73556d0dbfdb2705eb111eb1e0af0ecfc8a0281d63:bd756289919e57e6&quot;</span>
+    <span class="n">lyc</span> <span class="o">=</span> <span class="s2">&quot;lyc&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    lyc是我的朋友</span>
+<span class="sd">    你们可以给她<text>01luyicheng@gmail.com</text>发邮件</span>
+<span class="sd">    对文章有疑问也可以给我<text>c27344098@gmail.com</text>发邮件  </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">netntlmv1_empty_checker</span><span class="p">(</span><span class="n">RawHash</span><span class="p">,</span> <span class="n">lyc</span><span class="p">))</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    应该是True</span>
+<span class="sd">    &quot;&quot;&quot;</span>   
+</pre></div>
+    </div>
+</body>
+</html>
+

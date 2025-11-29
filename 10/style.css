@@ -1,0 +1,30 @@
+@import "basestyle.css";
+body { 
+  font-family: Verdana, sans-serif;
+}
+code,pre {
+	font-family: cursive,Courier;
+    color: rgb(39,39,39)
+}
+p:not([class])::first-letter {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2F4F4F;
+}
+hr {
+  border: none; 
+  height: 1.0px; 
+  background-color: rgb(0,0,0); 
+}
+h1, h2
+    { font-family: "Helvetica"; color: #006b6b; }
+h2.topmost 
+    { text-align: center; font-style: normal; font-weight: bold; font-size: 200%; 
+      font-family: "Helvetica"; color: #a10048;
+      margin-top: 0; }
+.hilite
+    { color: #a10048;}
+.sidebar { width: 33%; padding-left: 2em; }
+.page .sidebar { text-align: center; }
+.sidebar ul, .sidebar li { list-style: none; padding-left: 0; margin-left: 0} 
+.sidebar li { padding-bottom: 1em; }
